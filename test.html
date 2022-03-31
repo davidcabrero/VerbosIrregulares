@@ -1,28 +1,234 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verbos Irregulares</title>
-    <link rel="stylesheet" href="css/jquery-ui.min.css">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/estilos.css">
-    <script id="listado" type="text/javascript" src="js/listaVerbos.js"></script>
-</head>
-<body>
-    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <button class="btn btn-primary me-md-2" type="button">Button</button>
-        <input class="form-control" type="text" placeholder="Default input" aria-label="default input example">
-        <button class="btn btn-primary" type="button">Button</button>
-      </div>
-    <br>
-    <div class="container">
-        <div class="row">
-            <div class="col"></div>
-        <div class="col"><button id="volver" class="btn btn-primary" onclick="window.location.href='index.html'">Volver</button></div>
-            <div class="col"></div>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Test Verbos Irregulares</title>
+        <link rel="stylesheet" href="css/jquery-ui.min.css">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/estilos.css">
+    </head>
+
+    <body>
+        <div class="container">
+            <!--Intro-->
+            <div id="niveles" style="display: block">
+                <img src="imagenes/bandera.png" class="rounded mx-auto d-block" alt="uk" width="50" height="50" />
+                <div class="row">
+                    <button class="btn btn-block btn-danger disabled">TEST DE VERBOS IRREGULARES</button>
+                </div>
+                <div class="row">
+                    <button id="eligenivel" class="btn btn-block btn-primary disabled">ELIGE EL NIVEL</button>
+                </div>
+                <br>
+                <!--Niveles para elegir-->
+                <div class="row">
+                    <div class="col">
+                        <button id="10" class="btn btn-dark botonNivel" onclick="eligeNivel(this.id)">10</button>
+                    </div>
+                    <div class="col">
+                        <button id="20" class="btn btn-dark botonNivel" onclick="eligeNivel(this.id)">20</button>
+                    </div>
+                    <div class="col">
+                        <button id="40" class="btn btn-dark botonNivel" onclick="eligeNivel(this.id)">40</button>
+                    </div>
+                    <div class="col">
+                        <button id="60" class="btn btn-dark botonNivel" onclick="eligeNivel(this.id)">60</button>
+                    </div>
+                    <div class="col">
+                        <button id="80" class="btn btn-dark botonNivel" onclick="eligeNivel(this.id)">80</button>
+                    </div>
+                    <div class="col">
+                        <button id="100" class="btn btn-dark botonNivel" onclick="eligeNivel(this.id)">100</button>
+                    </div>
+                    <div class="col">
+                        <button id="120" class="btn btn-dark botonNivel" onclick="eligeNivel(this.id)">120</button>
+                    </div>
+                    <div class="col">
+                        <button id="140" class="btn btn-dark botonNivel" onclick="eligeNivel(this.id)">140</button>
+                    </div>
+                </div>
+            </div>
+            
+
+            <!--TEST DE VERBOS-->
+            <div id="juego" style="display: none">
+                <img src="imagenes/bandera.png" class="rounded mx-auto d-block" alt="uk" width="50" height="50" />
+                <div class="row">
+                    <button class="btn btn-block btn-danger disabled">TEST DE VERBOS IRREGULARES</button>
+                </div>
+                <div class="row">
+                    <button id="nivel" class="btn btn-block btn-primary disabled"> </button>
+                    <button id="marcador" class="btn btn-block btn-primary">0</button>
+                </div>
+                <br>
+                <div class="p-3 mb-2 bg-info text-dark">
+                    <!--Botones de cada forma verbal-->
+                <div class="row">
+                    <button id="castellano" class="btn btn-block btn-outline-dark disabled"></button>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col">
+                        <div id="boton1"></div>
+                    </div>
+                    <div class="col">
+                        <div id="boton2"></div>
+                    </div>
+                    <div class="col">
+                        <div id="boton3"></div>
+                    </div>
+                </div>
+            </div>
+                <br>
+                <!--Botones comprobar, nivel y siguiente-->
+                <div class="row justify-content-center">
+                    <button id="comprobar" class="btn btn-dark" onclick="comprueba()">Comprobar</button>
+                    <span></span>
+                    <button id="siguiente" class="btn btn-dark" onclick="siguiente()">Siguiente</button>
+                </div>
+                <br>
+                <div class="row justify-content-center">
+                    <button id="botonCambiarNivel" class="btn btn-danger btn-sm" onclick="cambiarNivel()">Cambia Nivel</button>
+                </div>
+            </div>
+
+            <!--En el caso de que ganes-->
+            <div id="victoria" style="display: none">
+                <div class="row justify-content-center">
+                    <button id="botonResultados" class="btn btn-outline-success disabled"><b>HAS GANADO, MUY BIEEEN</b></button>
+                </div>
+                <div class="row justify-content-center">
+                    <button id="botonCambiarNivel" class="btn btn-primary btn-sm" onclick="cambiarNivel()">Cambia Nivel</button>
+                    
+                </div>
+            </div>
         </div>
-    </div>
-</body>
+
+        <script src="js/listaVerbos.js"></script>
+        <script>
+            //Variables
+            var tiempoAAdivinar = 0;
+            var verboElegido = 0;
+            var jugando = 0;
+            var nivel = 0;
+            var marcador = 0;
+
+            var opcion1 = "";
+            var opcion2 = "";
+           
+            //Función de elegir el nivel de verbos
+            function eligeNivel(id) {
+                nivel = parseInt(id, 10);
+                document.getElementById('niveles').style = "display:none"; //Estilos
+                document.getElementById('juego').style = "display:block";
+                document.getElementById('nivel').innerHTML = "Nivel: " + nivel; //Sale el nivel en pantalla
+                eligeVerbo(); //elige el verbo
+            }
+            
+//Para comprobar si el verbo introducido es correcto
+            function comprueba() {
+                if (jugando == 0) {
+                    
+                    jugando = 1;
+                    //Se guarda la respuesta
+                    var verboLeido = document.getElementById('caja').value;
+                    document.getElementById('comprobar').classList.remove('btn-dark'); //Se quitan los avisos de respuesta correcta o incorrecta
+                    document.getElementById('comprobar').classList.remove('btn-success');
+                    document.getElementById('comprobar').classList.remove('btn-danger');
+                    document.getElementById("comprobar").disabled = true; //Ya no puedes pulsar a comprobar
+                    document.getElementById("siguiente").disabled = false; //Puedes pulsar en siguiente
+
+                    
+                    //separar verbos válidos
+                        if (opcion1 == verboLeido || opcion2 == verboLeido) {
+                            //Si el verbo es correcto, has acertado
+                            marcador++;//si el verbo escrito es correcto un + al marcador
+                            document.getElementById('comprobar').classList.add('btn-success');
+                            document.getElementById('comprobar').innerText = "HAS ACERTADO";
+                        }else {
+                            document.getElementById('comprobar').classList.add('btn-success');
+                            document.getElementById('comprobar').innerText = verbos[verboElegido][tiempoAAdivinar];
+                        }
+                        if (verbos[verboElegido][tiempoAAdivinar] == verboLeido) {
+                            //En el caso de que sea correcta
+                            marcador++;//si el verbo es correcto, un punto más
+                            document.getElementById('comprobar').classList.add('btn-success');
+                            document.getElementById('comprobar').innerText = "Has Acertado!";
+
+                        }else {
+                            //En el caso de fallar
+                            marcador--; //Cada fallo resta 1 punto
+
+                            document.getElementById('comprobar').classList.add('btn-danger');
+                            document.getElementById('comprobar').innerText = verbos[verboElegido][tiempoAAdivinar];
+                        }
+                }
+                else {
+                    siguiente();
+                }
+                document.getElementById('marcador').innerText = marcador; //Se añade el nuevo marcador
+                if (marcador ==  nivel){ //Si te pasas el nivel
+                    document.getElementById("comprobar").disabled = true; //Ya no puedes pulsar a comprobar
+                    document.getElementById("siguiente").disabled = true; //Ya no puedes pulsar en siguiente
+                    document.getElementById('comprobar').classList.add('btn-success');
+                    document.getElementById('comprobar').innerText = "HAS CONSEGUIDO PASAR EL NIVEL, PULSA EN CAMBIA DE NIVEL";
+                }
+            }
+
+
+            function eligeVerbo() { //Función para elegir el verbo
+
+                verboElegido = Math.floor(Math.random() * verbos.length); //verbo al azar para el test
+                tiempoAAdivinar = Math.floor(Math.random() * 3); //tiempo al azar
+                document.getElementById("castellano").innerHTML = verbos[verboElegido][3];
+                console.log(verbos[verboElegido][tiempoAAdivinar]);
+                document.getElementById("siguiente").disabled = true; //Ya no puedes pulsar
+
+                
+                //Botones de los verbos
+                if (tiempoAAdivinar == 0) {
+                    document.getElementById("boton1").innerHTML = '<input id="caja" class="form-control">';
+                }
+                else {
+                    document.getElementById("boton1").innerHTML = '<button id="boton1" class="btn btn-block btn-secondary">' + verbos[verboElegido][0] + '</button>';
+                }
+
+                if (tiempoAAdivinar == 1) {
+                    document.getElementById("boton2").innerHTML = '<input id="caja" class="form-control">';
+                }
+                else {
+                    document.getElementById("boton2").innerHTML = '<button id="boton2" class="btn btn-block btn-secondary">' + verbos[verboElegido][1] + '</button>';
+                }
+
+                if (tiempoAAdivinar == 2) {
+                    document.getElementById("boton3").innerHTML = '<input id="caja" class="form-control">';
+                }
+                else {
+                    document.getElementById("boton3").innerHTML = '<button id="boton3" class="btn btn-block btn-secondary">' + verbos[verboElegido][2] + '</button>';
+                }
+
+            }
+            eligeVerbo();
+
+            function siguiente() { //Poder cambiar al siguiente verbo
+                document.getElementById("comprobar").disabled = false;
+                document.getElementById('comprobar').classList.add('btn-dark');
+                document.getElementById('comprobar').innerText = "Comprobar";
+                document.getElementById("siguiente").disabled = true;
+                jugando = 0;
+                eligeVerbo();
+            }
+
+            function cambiarNivel() { //Cambia el nivel de los verbos
+                document.getElementById('niveles').style = "display:block";
+                document.getElementById('juego').style = "display:none";
+                document.getElementById('victoria').style = "display:none";
+                siguiente();
+            }
+        </script>
+    </body>
+
 </html>

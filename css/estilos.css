@@ -2,9 +2,10 @@
 button  {
     width: 100%;
 }
-p {
-    text-align: center;
-    font-weight: bold;
-    margin-bottom: 20px 0;
-    background-color: #ECEBE9;
+#botonCambiarNivel{
+    width: 50%;
+}
+
+body {
+    background-image: url("../imagenes/fondo.jpeg");
 }
